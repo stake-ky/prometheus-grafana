@@ -7,14 +7,13 @@ services:
     container_name: prometheus
     restart: unless-stopped
     volumes:
-      - ./prometheus/config:/etc/prometheus/
-      - ./prometheus/data:/data/prometheus
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.local.path=/prometheus'
-      - '--web.console.templates=/etc/prometheus/consoles'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'
-    #   - '--web.listen-address=prometheus'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
     #   - '--web.listen-address=0.0.0.0:9090'
     #   - '--web.enable-admin-api'
     #   - '--web.external-url=https://localhost:1234'
@@ -27,11 +26,13 @@ services:
     container_name: grafana
     restart: unless-stopped
     volumes:
-      - ./grafana:/var/lib/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=mycomplexpassword
+      - GF_SECURITY_ADMIN_PASSWORD=RANDOM_ROOT_PASSWORD
       - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_SERVER_DOMAIN=admin.stake.ky
+    #   - GF_SERVER_DOMAIN=example.com
     #   - GF_SMTP_ENABLED=true
     #   - GF_SMTP_HOST=smtp.gmail.com:587
     #   - GF_SMTP_USER=myadrress@gmail.com
@@ -52,19 +53,20 @@ services:
       - ./logs/nginx:/var/log/nginx
       - ./certbot/etc:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
+      - ./prometheus/:/etc/prometheus/
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     ports:
       - "80:80"
       - "443:443"
 
-#   certbot:
-#     image: certbot/certbot
-#     container_name: certbot
-#     restart: unless-stopped
-#     volumes:
-#       - ./certbot/etc:/etc/letsencrypt
-#       - ./certbot/www:/var/www/certbot
-#     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 5d & wait $${!}; done;'"
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    restart: unless-stopped
+    volumes:
+      - ./certbot/etc:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 5d & wait $${!}; done;'"
 
 #   cadvisor:
 #     image: google/cadvisor:latest
@@ -77,3 +79,7 @@ services:
 #       - /var/lib/docker/:/var/lib/docker:ro
 #     expose:
 #       - 8080
+
+volumes:
+    prometheus_data:
+    grafana_data:
