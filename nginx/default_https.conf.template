@@ -1,0 +1,65 @@
+server {    
+    listen 80;
+    listen [::]:80;
+    server_name example.com prometheus.example.com;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot/;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name example.com;
+
+    resolver 127.0.0.11;
+
+    access_log /var/log/nginx/grafana-access.log;
+    error_log /var/log/nginx/grafana-error.log;
+
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    
+    include /etc/letsencrypt/conf/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/conf/ssl-dhparams.pem; 
+
+    location / {
+        set $docker_host "grafana";
+        proxy_pass http://$docker_host:3000;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_redirect off;
+    }
+
+}
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name prometheus.example.com;
+
+    resolver 127.0.0.11;
+
+    access_log /var/log/nginx/prometheus-access.log;
+    error_log /var/log/nginx/prometheus-error.log;
+
+    ssl_certificate /etc/letsencrypt/live/prometheus.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/prometheus.example.com/privkey.pem;
+    
+    include /etc/letsencrypt/conf/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/conf/ssl-dhparams.pem; 
+
+    location / {
+        auth_basic "Prometheus";
+        auth_basic_user_file /etc/prometheus/.credentials;
+        set $docker_host "prometheus";
+        proxy_pass http://$docker_host:9090;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_redirect off;
+    }
+
+}

@@ -68,18 +68,6 @@ services:
       - ./certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 5d & wait $${!}; done;'"
 
-#   cadvisor:
-#     image: google/cadvisor:latest
-#     container_name: monitoring_cadvisor
-#     restart: unless-stopped
-#     volumes:
-#       - /:/rootfs:ro
-#       - /var/run:/var/run:rw
-#       - /sys:/sys:ro
-#       - /var/lib/docker/:/var/lib/docker:ro
-#     expose:
-#       - 8080
-
 volumes:
     prometheus_data:
     grafana_data:
