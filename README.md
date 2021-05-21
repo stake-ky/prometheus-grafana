@@ -17,3 +17,11 @@
     find . -type f -exec sed -i 's+example.com+'${PROJECT_URL}'+g' {} \;
     ```
 
+# Inspiration
+
+* [How to Setup Grafana and Prometheus on Linux](https://devconnected.com/how-to-setup-grafana-and-prometheus-on-linux/)
+
+* [Prometheus Node Exporter](https://github.com/prometheus/node_exporter)
+    - [Helium Miner Grafana Dashboard](https://github.com/tedder/helium_miner_grafana_dashboard)
+    
+* [Helium Miner Exporter](https://github.com/tedder/miner_exporter)

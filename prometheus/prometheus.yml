@@ -16,14 +16,19 @@ rule_files:
   # - "first_rules.yml"
   # - "second_rules.yml"
 
-# A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'prometheus'
 
-    # metrics_path defaults to '/metrics'
-    # scheme defaults to 'http'.
-
+  - job_name: 'prometheus' # Make Prometheus scrape itself for metrics.
     static_configs:
     - targets: ['localhost:9090']
+
+  - job_name: '$VALIDATOR' # Update to reflect the name of the validator want to scrape
+    # metrics_path: /metrics # Defaults to '/metrics'
+    # scrape_interval: 5s
+    scheme: https # Defaults to 'http'
+    basic_auth:
+      username: admin
+      password: $MYCOMPLEXPASSWORD
+    static_configs:
+    - targets: ['node.example.com', 'miner.example.com']
