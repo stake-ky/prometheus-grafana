@@ -68,14 +68,43 @@ Project
     ```
 * Update project URL. Change `project_url` below, before running script.
     ```bash
-    PROJECT_URL=project_url &&\
-    find . -type f -exec sed -i 's+example.com+'${PROJECT_URL}'+g' {} \;
+    PROJECT_URL=project_url && find . -type f -exec sed -i 's+example.com+'${PROJECT_URL}'+g' {} \;
     ```    
-
 * Please follow the [Prometheus Integration Guide](https://www.pagerduty.com/docs/guides/prometheus-integration-guide) guide and generate the `Integration Key`. 
 
-* Update the PagerDuty Integration Key in the alertmanager.yml configuration file under alertmanager directory. Replace the `PagerDutyIntegrationKey` with the `Integration Key ` generated in the previous stage. 
+* Update the PagerDuty Integration Key in the alertmanager.yml configuration file under alertmanager directory. Replace the `PagerDutyIntegrationKey` with the `Integration Key` obtained from Automation -> Event Rules -> Default Global Ruleset in [PagerDuty](https://stakeky.pagerduty.com/rules/rulesets/_default)
 
+## SSL and Securing Endpoints
+* Open ports 80 and 443 on your server
+* Update project URL. Change `project_url` below, before running script.
+    ```bash
+    PROJECT_URL=project_url && find . -type f -exec sed -i 's+example.com+'${PROJECT_URL}'+g' {} \;
+    ```
+* Install Let's Encrypt SSL using script 
+    ```bash
+    cd /usr/helium/prometheus-grafana
+    ```
+    ```bash
+    ./scripts/install_ssl.sh
+    ```
+* Stop running Nginx container
+    ```bash
+    docker-compose stop nginx
+    ```
+* Switch to Nginx SSL config
+    ```bash
+    rm nginx/default.conf && cp nginx/default_https.conf.template nginx/default.conf
+    ```
+* Recreate Certbot
+    ```bash
+    docker-compose up --build --force-recreate --no-deps -d certbot
+    ```
+* Recreate Nginx
+    ```bash
+    docker-compose up --build --force-recreate --no-deps -d nginx
+    ```
+
+## Launch Project
 * Launch Docker-compose containers 
     ```bash
     docker-compose up -d --build

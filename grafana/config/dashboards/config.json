@@ -1127,7 +1127,7 @@
         {
           "allValue": null,
           "current": {},
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "Prometheus",
           "definition": "label_values(validator_name)",
           "description": null,
           "error": null,
@@ -1154,7 +1154,7 @@
         {
           "allValue": null,
           "current": {},
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "Prometheus",
           "definition": "label_values(validator_version_info{validator_name=\"$validator\"},instance)",
           "description": null,
           "error": null,
