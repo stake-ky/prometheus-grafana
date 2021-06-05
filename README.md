@@ -70,9 +70,11 @@ Project
     ```bash
     PROJECT_URL=project_url && find . -type f -exec sed -i 's+example.com+'${PROJECT_URL}'+g' {} \;
     ```    
-* Please follow the [Prometheus Integration Guide](https://www.pagerduty.com/docs/guides/prometheus-integration-guide) guide and generate the `Integration Key`. 
 
+## Integrate PagerDuty
 * Update the PagerDuty Integration Key in the alertmanager.yml configuration file under alertmanager directory. Replace the `PagerDutyIntegrationKey` with the `Integration Key` obtained from Automation -> Event Rules -> Default Global Ruleset in [PagerDuty](https://stakeky.pagerduty.com/rules/rulesets/_default)
+
+    - Additional information can be found in the [Prometheus Integration Guide](https://www.pagerduty.com/docs/guides/prometheus-integration-guide). 
 
 ## SSL and Securing Endpoints
 * Open ports 80 and 443 on your server
