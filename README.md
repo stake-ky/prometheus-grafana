@@ -74,13 +74,38 @@ Project
     PROJECT_URL=project_url && find . -type f -exec sed -i 's+example.com+'${PROJECT_URL}'+g' {} \;
     ```    
 
-## Integrate PagerDuty
-* Update the PagerDuty Integration Key in the `alertmanager.yml` configuration file under alertmanager directory. Replace the `PAGERDUTY_INTEGRATION_KEY` with the `Integration Key` obtained from Automation -> Event Rules -> Default Global Ruleset in [PagerDuty](https://stakeky.pagerduty.com/rules/rulesets/_default)
+## Integrate PagerDuty (Optional)
+
+* Create a new service in `PagerDuty` by navigating to `Services -> Service Directory` and clicking on `New Service`.
+
+    ![PagerDuty Add New Service](src/pagerduty_add_new_service.png)
+
+* Provide a service `Name` and `Description` and click `Next`.
+
+    ![PagerDuty Create Service](src/pagerduty_create_service.png)
+
+* Create a new `Escalation Policy` or select an exisiting policy, then click `Next`. In this example the `Default` policy was selected.
+
+    ![PagerDuty Assign an Escalation Policy](src/pagerduty_escalation_policy.png)
+
+* Search for `Prometheus` using the filed provided and select as the `Integration`. Then click `Create Service` to continue.
+
+    ![PagerDuty Integrations](src/pagerduty_integrations.png)
+
+* Save the `Integrations Key` in a safe place. It is required in the next step.
+
+    ![PagerDuty Integration Key](src/pagerduty_integration_key.png)
+
+* Update the PagerDuty Integration Key in the `alertmanager.yml` configuration file under alertmanager directory. Replace the `PAGERDUTY_INTEGRATION_KEY` with the `Integration Key` obtained from the previous step or navigate to Services -> Service Directory -> Prometheus Automation -> Integrations from PagerDuty
 
     ```bash
     PAGERDUTY_INTEGRATION_KEY=integration_key && find alertmanager/alertmanager.yml -type f -exec sed -i 's+PAGERDUTY_INTEGRATION_KEY+'${PAGERDUTY_INTEGRATION_KEY}'+g' {} \;
     ```    
-    - Additional information can be found in the [Prometheus Integration Guide](https://www.pagerduty.com/docs/guides/prometheus-integration-guide). 
+* Test your PagerDuty configuration by running the following test
+
+    ```bash
+    curl -d '[{"labels": {"Alertname": "PagerDuty Test"}}]' http://localhost:9093/api/v1/alerts
+    ```
 
 ## Add Targets to Prometheus
 
@@ -157,4 +182,4 @@ Project
 
 * [Helium Miner Exporter](https://github.com/tedder/miner_exporter)
 
-* [Prometheus Integration Guide](https://www.pagerduty.com/docs/guides/prometheus-integration-guide)
+* [PagerDuty/Prometheus Integration Guide](https://www.pagerduty.com/docs/guides/prometheus-integration-guide)

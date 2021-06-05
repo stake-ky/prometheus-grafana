@@ -3,8 +3,8 @@ route:
   group_wait: 10s
   group_interval: 1m
   repeat_interval: 10m
-  receiver: 'pagerduty'
+  receiver: 'Prometheus'
 receivers:
-- name: 'pagerduty'
+- name: 'Prometheus'
   pagerduty_configs:
   - service_key: 'PAGERDUTY_INTEGRATION_KEY' # Update PagerDuty Integration Key
