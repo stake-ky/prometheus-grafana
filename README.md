@@ -72,9 +72,13 @@ Project
     ```    
 
 ## Integrate PagerDuty
-* Update the PagerDuty Integration Key in the alertmanager.yml configuration file under alertmanager directory. Replace the `PagerDutyIntegrationKey` with the `Integration Key` obtained from Automation -> Event Rules -> Default Global Ruleset in [PagerDuty](https://stakeky.pagerduty.com/rules/rulesets/_default)
+* Update the PagerDuty Integration Key in the `alertmanager.yml` configuration file under alertmanager directory. Replace the `PAGERDUTY_INTEGRATION_KEY` with the `Integration Key` obtained from Automation -> Event Rules -> Default Global Ruleset in [PagerDuty](https://stakeky.pagerduty.com/rules/rulesets/_default)
 
     - Additional information can be found in the [Prometheus Integration Guide](https://www.pagerduty.com/docs/guides/prometheus-integration-guide). 
+
+    ```bash
+    PAGERDUTY_INTEGRATION_KEY=integration_key && find alertmanager/alertmanager.yml -type f -exec sed -i 's+PAGERDUTY_INTEGRATION_KEY+'${PAGERDUTY_INTEGRATION_KEY}'+g' {} \;
+    ```    
 
 ## SSL and Securing Endpoints
 * Open ports 80 and 443 on your server

@@ -7,4 +7,4 @@ route:
 receivers:
 - name: 'pagerduty'
   pagerduty_configs:
-  - service_key: 'PagerDutyIntegrationKey' # Update PagerDuty Integration Key
+  - service_key: 'PAGERDUTY_INTEGRATION_KEY' # Update PagerDuty Integration Key
