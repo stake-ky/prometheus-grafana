@@ -25,10 +25,11 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     restart: unless-stopped
-    volumes:
+    # volumes:
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./grafana/config/dashboards/:/var/lib/grafana/dashboards/
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=RANDOM_ROOT_PASSWORD
       - GF_USERS_ALLOW_SIGN_UP=false
@@ -43,6 +44,15 @@ services:
       - "3000:3000"
     depends_on:
       - prometheus
+
+  alertmanager:
+    image: quay.io/prometheus/alertmanager
+    container_name: alertmanager
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/      
+    restart: unless-stopped
 
   nginx:
     image: nginx:1.15-alpine

@@ -1,10 +1,20 @@
 #!/bin/bash
-
 # Variables
 # Linux Distribution Version
-linuxDist="20.04"
+linuxDist=$(lsb_release -sr)
+# echo $linuxDist
 # Linux Distribution Name. 16.04 xenial, 18.04 bionic, 20.04 focal
-linuxDistName="focal"
+
+if [[ $linuxDist == '20.04'  ]]
+    then
+        linuxDistName='focal'
+elif [[ $linuxDist == '18.04' ]]
+    then
+        linuxDistName='bionic'
+else
+    linuxDistName='xenial'
+fi
+
 # Docker version https://docs.docker.com/engine/release-notes/
 dockerVersion="20.10.6"
 # Docker Compose version https://docs.docker.com/compose/release-notes/

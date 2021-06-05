@@ -1,5 +1,43 @@
 # README.md (Incomplete)
 
+## Introduction
+This is a tool to monitor the helium node perfomance. This will help to see the resources and performance data in the grafana dashboard also trigger the alert to the pagerduty using the alertmanager. We are using docker containers to run the services.
+
+## Project Structure
+
+```
+Project
+└───alertmanager
+│   |   alertmanager.yml   
+|
+└───certbot
+|   |   ...
+│
+└───grafana
+|   └───config
+|   |   └───dashboards
+|   |       |   config.json
+|   |
+|   └───provisioning
+|       └───dashboards
+|           |   local.yml
+|
+└───nginx
+|   |   ...
+|
+└───prometheus
+│   │   first_rules.yml
+│   │   prometheus.yml
+│   
+└───scripts
+|   │   install_docker_git_etc.sh
+|   │   install_ssl.sh
+|
+|   docker-compose.yml
+|   README.md
+```
+
+## Instruction to Setup Project
 * Make directory helium and change owner
     ```bash
     sudo mkdir /usr/helium && sudo chown -R $USER:$USER /usr/helium
@@ -14,7 +52,7 @@
     ```
 * Install Docker and Docker-compose using the script provided. Update the Distribution Version/Name and Docker and Docker-compose Versions as applicable. 
     ```bash
-    cd /usr/helium/validator
+    cd /usr/helium/prometheus-grafana
     ```
     ```bash
     ./scripts/install_docker_git_etc.sh
@@ -33,6 +71,11 @@
     PROJECT_URL=project_url &&\
     find . -type f -exec sed -i 's+example.com+'${PROJECT_URL}'+g' {} \;
     ```    
+
+* Please follow the [Prometheus Integration Guide](https://www.pagerduty.com/docs/guides/prometheus-integration-guide) guide and generate the `Integration Key`. 
+
+* Update the PagerDuty Integration Key in the alertmanager.yml configuration file under alertmanager directory. Replace the `PagerDutyIntegrationKey` with the `Integration Key ` generated in the previous stage. 
+
 * Launch Docker-compose containers 
     ```bash
     docker-compose up -d --build
@@ -41,7 +84,7 @@
     ```bash
     groups
     ```    
-* Confirm both validator and watchtower containers are running
+* Confirm all the containers are running using below command
     ```bash
     docker-compose ps
     ```
@@ -54,3 +97,5 @@
     - [Helium Miner Grafana Dashboard](https://github.com/tedder/helium_miner_grafana_dashboard)
 
 * [Helium Miner Exporter](https://github.com/tedder/miner_exporter)
+
+* [Prometheus Integration Guide](https://www.pagerduty.com/docs/guides/prometheus-integration-guide)

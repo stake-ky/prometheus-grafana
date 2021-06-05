@@ -1,0 +1,10 @@
+route:
+  group_by: ['cluster']
+  group_wait: 10s
+  group_interval: 1m
+  repeat_interval: 10m
+  receiver: 'pagerduty'
+receivers:
+- name: 'pagerduty'
+  pagerduty_configs:
+  - service_key: 'PagerDutyIntegrationKey' # Update PagerDuty API Key
