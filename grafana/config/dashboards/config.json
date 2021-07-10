@@ -615,10 +615,10 @@
           },
           {
             "exemplar": true,
-            "expr": "node_memory_MemFree_bytes{job=~\"$validator\"}/(1024^3)",
+            "expr": "node_memory_MemAvailable_bytes{job=~\"$validator\"}/(1024^3)",
             "hide": false,
             "interval": "",
-            "legendFormat": "free mem",
+            "legendFormat": "avail mem",
             "refId": "C"
           }
         ],
@@ -930,14 +930,14 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "rate(node_disk_io_time_weighted_seconds_total{job=~\"$validator\",device!~\"^sd[ab]\"}[2m])",
+            "expr": "rate(node_disk_io_time_weighted_seconds_total{job=~\"$validator\",device!=\"md0\"}[2m])",
             "interval": "",
             "legendFormat": "queue len {{device}}",
             "refId": "A"
           },
           {
             "exemplar": true,
-            "expr": "rate(node_disk_write_time_seconds_total{job=~\"$validator\",device!~\"^sd[ab]\"}[2m])/rate(node_disk_writes_completed_total{job=~\"$validator\",device!~\"^sd[ab]\"}[2m])",
+            "expr": "rate(node_disk_write_time_seconds_total{job=~\"$validator\",device!=\"md0\"}[2m])/rate(node_disk_writes_completed_total{job=~\"$validator\",device!=\"md0\"}[2m])",
             "hide": false,
             "interval": "",
             "legendFormat": "latency {{device}}",
