@@ -33,6 +33,12 @@
       "id": "table",
       "name": "Table",
       "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
     }
   ],
   "annotations": {
@@ -45,6 +51,15 @@
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "type": "dashboard"
+      },
+      {
+        "datasource": "Prometheus",
+        "enable": true,
+        "expr": "resets(validator_container_uptime{state_type=\"start\",validator_name=\"$validator\"}[5m])",
+        "hide": false,
+        "iconColor": "rgba(255, 96, 96, 1)",
+        "name": "miner restart",
+        "showIn": 0
       }
     ]
   },
@@ -52,7 +67,7 @@
   "gnetId": 14319,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1625938366667,
+  "iteration": 1625955049907,
   "links": [],
   "panels": [
     {
@@ -99,6 +114,7 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:68",
           "alias": "consensus",
           "bars": false,
           "color": "#1F60C4",
@@ -117,7 +133,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "validator_ledger{subtype!=\"total\", validator_name=\"$validator\"}",
+          "expr": "validator_ledger{subtype!=\"total\",subtype!=\"last_heartbeat\", job=\"$validator\"}",
           "instant": false,
           "interval": "",
           "legendFormat": "penalty-{{subtype}}",
@@ -125,7 +141,7 @@
         },
         {
           "exemplar": true,
-          "expr": "validator_inconsensus{validator_name=~\"$validator|\"}",
+          "expr": "validator_inconsensus{job=~\"$validator|\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "consensus",
@@ -175,123 +191,6 @@
       }
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "description": "",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 17,
-        "y": 0
-      },
-      "hiddenSeries": false,
-      "id": 26,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.3",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "validator_api_balance{validator_name=\"$validator\"}",
-          "format": "time_series",
-          "interval": "",
-          "legendFormat": "$validator",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "api balance",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": false,
-              "Value #A": false,
-              "__name__": false,
-              "instance": true,
-              "job": true
-            },
-            "indexByName": {
-              "Time": 0,
-              "Value #A": 4,
-              "__name__": 1,
-              "instance": 2,
-              "job": 3,
-              "validator_name": 5
-            },
-            "renameByName": {
-              "Value #A": ""
-            }
-          }
-        }
-      ],
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
       "datasource": null,
       "fieldConfig": {
         "defaults": {
@@ -328,7 +227,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 156
+                "value": 126
               }
             ]
           },
@@ -340,7 +239,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 80
+                "value": 63
               }
             ]
           },
@@ -352,7 +251,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": null
+                "value": 169
               }
             ]
           }
@@ -360,9 +259,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 6,
+        "w": 5,
         "x": 17,
-        "y": 6
+        "y": 0
       },
       "id": 10,
       "options": {
@@ -373,7 +272,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "validator_version_info{validator_name=\"$validator\"}",
+          "expr": "validator_version_info{job=\"$validator\"}",
           "format": "table",
           "instant": false,
           "interval": "",
@@ -421,6 +320,91 @@
       "type": "table"
     },
     {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 17,
+        "y": 5
+      },
+      "id": 35,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.3",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "validator_api_balance{validator_name=\"$validator\"}",
+          "interval": "",
+          "legendFormat": "$validator",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "api balance",
+      "type": "timeseries"
+    },
+    {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -429,10 +413,245 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 6,
-        "w": 17,
+        "h": 9,
+        "w": 11,
         "x": 0,
         "y": 10
+      },
+      "hiddenSeries": false,
+      "id": 26,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{job=~\"$validator\", mode=\"idle\"}[2m])) * 100)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "usage",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:116",
+          "decimals": 0,
+          "format": "percent",
+          "label": "",
+          "logBase": 1,
+          "max": "100",
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:117",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 1,
+      "fillGradient": 4,
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 11,
+        "y": 10
+      },
+      "hiddenSeries": false,
+      "id": 18,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:195",
+          "alias": "/mem/",
+          "fill": 0,
+          "fillGradient": 0,
+          "linewidth": 2,
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:402",
+          "alias": "load1",
+          "fill": 1,
+          "fillGradient": 0
+        },
+        {
+          "$$hashKey": "object:459",
+          "alias": "load5",
+          "bars": false,
+          "fillGradient": 10,
+          "lines": true,
+          "zindex": -1
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "node_load1{job=~\"$validator\"}",
+          "interval": "",
+          "legendFormat": "load1",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "node_load5{job=~\"$validator\"}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "load5",
+          "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "(node_memory_MemAvailable_bytes{job=~\"$validator\"})/(1024^3)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "avail mem",
+          "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "node_memory_MemFree_bytes{job=~\"$validator\"}/(1024^3)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "free mem",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "cpu load vs memory",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:67",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:68",
+          "format": "decgbytes",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "block age": "dark-green"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 0,
+        "y": 19
       },
       "hiddenSeries": false,
       "id": 6,
@@ -458,6 +677,7 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:130",
           "alias": "/conn/",
           "bars": false,
           "fill": 0,
@@ -465,8 +685,9 @@
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:131",
           "alias": "/block.age/",
-          "color": "rgb(165, 101, 104)",
+          "color": "rgb(119, 122, 74)",
           "fill": 0
         }
       ],
@@ -496,6 +717,14 @@
           "interval": "",
           "legendFormat": "connections",
           "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "validator_block_age{resource_type=\"last_heartbeat\",validator_name=\"$validator\"}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "last heartbeat",
+          "refId": "D"
         }
       ],
       "thresholds": [],
@@ -547,16 +776,17 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "description": "",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 11,
-        "x": 0,
-        "y": 16
+        "x": 11,
+        "y": 19
       },
       "hiddenSeries": false,
-      "id": 18,
+      "id": 29,
       "legend": {
         "avg": false,
         "current": false,
@@ -579,7 +809,11 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "alias": "/mem/",
+          "$$hashKey": "object:105",
+          "alias": "/delta/",
+          "fill": 0,
+          "lines": true,
+          "linewidth": 3,
           "yaxis": 2
         }
       ],
@@ -589,41 +823,26 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_load1{job=~\"$validator\"}",
+          "expr": "rate(validator_height{job=\"$validator\"}[1m])",
+          "instant": false,
           "interval": "",
-          "legendFormat": "load1",
+          "legendFormat": "rate",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "node_load5{job=~\"$validator\"}",
+          "expr": "chain_stats{resource_type=\"height\"}-on() validator_height{job=\"$validator\"}",
           "hide": false,
           "interval": "",
-          "legendFormat": "load5",
+          "legendFormat": "delta",
           "refId": "B"
-        },
-        {
-          "exemplar": true,
-          "expr": "node_memory_MemAvailable_bytes{job=~\"$validator\"}/(1024^3)",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "avail mem",
-          "refId": "C"
-        },
-        {
-          "exemplar": true,
-          "expr": "node_memory_MemFree_bytes{job=~\"$validator\"}/(1024^3)",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "free mem",
-          "refId": "D"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "cpu load vs memory",
+      "title": "block/height stats",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -639,16 +858,111 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:136",
           "format": "short",
-          "label": null,
+          "label": "blocks processed rate",
           "logBase": 1,
-          "max": null,
+          "max": "1",
           "min": "0",
           "show": true
         },
         {
-          "format": "decgbytes",
-          "label": "",
+          "$$hashKey": "object:137",
+          "format": "short",
+          "label": "blocks behind",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 0,
+        "y": 28
+      },
+      "hiddenSeries": false,
+      "id": 31,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "chain_stats{resource_type=\"staked_validators\"}",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "validators",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "validator count",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:92",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:93",
+          "format": "short",
+          "label": null,
           "logBase": 1,
           "max": null,
           "min": "0",
@@ -672,7 +986,7 @@
         "h": 9,
         "w": 11,
         "x": 11,
-        "y": 16
+        "y": 28
       },
       "hiddenSeries": false,
       "id": 24,
@@ -703,7 +1017,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_disk_io_time_seconds_total{job=~\"$validator\"}[15m]) * 100",
+          "expr": "irate(node_disk_io_time_seconds_total{job=\"$validator\"}[15m]) * 100",
           "interval": "",
           "legendFormat": "{{device}}",
           "refId": "A"
@@ -713,7 +1027,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "disk utilization",
+      "title": "disk IO utilization",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -729,6 +1043,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:195",
           "decimals": 0,
           "format": "percent",
           "label": null,
@@ -738,6 +1053,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:196",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -760,10 +1076,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 11,
         "x": 0,
-        "y": 25
+        "y": 37
       },
       "hiddenSeries": false,
       "id": 22,
@@ -801,14 +1117,14 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "rate(node_disk_io_time_weighted_seconds_total{job=~\"$validator\",device=\"sdb\"}[2m])",
+          "expr": "rate(node_disk_io_time_weighted_seconds_total{job=~\"$validator\",device=~\"sdb\"}[2m])",
           "interval": "",
           "legendFormat": "queue len {{device}}",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "rate(node_disk_write_time_seconds_total{job=~\"$validator\",device=\"sdb\"}[2m])/rate(node_disk_writes_completed_total{job=~\"$validator\",device=\"sdb\"}[2m])",
+          "expr": "rate(node_disk_write_time_seconds_total{job=~\"$validator\",device=~\"sdb\"}[2m])/rate(node_disk_writes_completed_total{job=~\"$validator\",device=~\"sdb\"}[2m])",
           "hide": false,
           "interval": "",
           "legendFormat": "latency {{device}}",
@@ -857,6 +1173,90 @@
       }
     },
     {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 11,
+        "y": 37
+      },
+      "id": 33,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "validator_disk_usage_bytes{job=~\"$validator\"}",
+          "interval": "",
+          "legendFormat": "validator volume",
+          "refId": "A"
+        }
+      ],
+      "title": "disk space usage",
+      "type": "timeseries"
+    },
+    {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -865,10 +1265,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 11,
-        "x": 11,
-        "y": 25
+        "x": 0,
+        "y": 45
       },
       "hiddenSeries": false,
       "id": 14,
@@ -894,7 +1294,8 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "alias": "/speed/",
+          "$$hashKey": "object:635",
+          "alias": "/core speed/",
           "color": "rgb(82, 51, 51)",
           "fill": 0,
           "yaxis": 2,
@@ -925,8 +1326,16 @@
           "expr": "max(node_cpu_scaling_frequency_hertz{job=~\"$validator\"})",
           "hide": false,
           "interval": "",
-          "legendFormat": "core speed",
+          "legendFormat": "max core speed",
           "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "min(node_cpu_scaling_frequency_hertz{job=~\"$validator\"})",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "min core speed",
+          "refId": "D"
         }
       ],
       "thresholds": [],
@@ -949,16 +1358,123 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:648",
           "format": "short",
           "label": "MB",
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         },
         {
+          "$$hashKey": "object:649",
           "format": "rothz",
           "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "steal": "yellow"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 11,
+        "y": 45
+      },
+      "hiddenSeries": false,
+      "id": 27,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "avg by (instance) (rate(node_cpu_seconds_total{job=~\"$validator\", mode=\"steal\"}[2m])) * 100",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "steal",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": false,
+          "op": "gt",
+          "value": 2,
+          "yaxis": "left"
+        }
+      ],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Steal",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:194",
+          "decimals": 0,
+          "format": "percent",
+          "label": "",
+          "logBase": 1,
+          "max": "5",
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:195",
+          "format": "short",
+          "label": "",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -1052,12 +1568,12 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-3d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Validator stats",
-  "uid": "9QGTpK9Mz",
-  "version": 1
+  "uid": "acAleFmnk",
+  "version": 6
 }
