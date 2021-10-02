@@ -1,7 +1,7 @@
 # README.md (Incomplete)
 
 ## Introduction
-This is a tool to monitor the helium node perfomance. This will help to see the resources and performance data in the grafana dashboard also trigger the alert to the pagerduty using the alertmanager. We are using docker containers to run the services.
+This is a tool to monitor the node perfomance. This will help to see the resources and performance data in the grafana dashboard also trigger the alert to the pagerduty using the alertmanager. We are using docker containers to run the services.
 
 ## Project Structure
 
@@ -41,21 +41,21 @@ Project
 ```
 
 ## Instruction to Setup Project
-* Make directory helium and change owner
+* Change to `usr` directory
     ```bash
-    sudo mkdir /usr/helium && sudo chown -R $USER:$USER /usr/helium
+    cd /usr
     ```
-* Change to the newly created directory    
+* Clone the prometheus-grafana repository    
     ```bash
-    cd /usr/helium
+    sudo git clone https://github.com/stake-ky/prometheus-grafana.git
     ```
-* Clone the helium-validator repository    
+* Change ownership of `prometheus-grafana` directory
     ```bash
-    git clone https://github.com/stake-ky/prometheus-grafana.git
+    sudo chown -R $USER:$USER /usr/prometheus-grafana
     ```
 * Install Docker and Docker-compose using the script provided. Update the Distribution Version/Name and Docker and Docker-compose Versions as applicable. 
     ```bash
-    cd /usr/helium/prometheus-grafana
+    cd /usr/prometheus-grafana
     ```
     ```bash
     ./scripts/install_docker_git_etc.sh
@@ -66,7 +66,7 @@ Project
     ```
 * Create random, complex root password variable for Grafana.
     ```bash
-    cd /usr/helium/prometheus-grafana && RANDOM_ROOT_PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 24 ; echo '') &&\
+    cd /usr/prometheus-grafana && RANDOM_ROOT_PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 24 ; echo '') &&\
     sed -i 's+RANDOM_ROOT_PASSWORD+'${RANDOM_ROOT_PASSWORD}'+g' docker-compose.yml
     ```
 * Update project URL. Change `project_url` below, before running script.
@@ -127,7 +127,7 @@ Project
 * Open ports 80 and 443 on your server
 * Install Let's Encrypt SSL using script 
     ```bash
-    cd /usr/helium/prometheus-grafana
+    cd /usr/prometheus-grafana
     ```
     ```bash
     ./scripts/install_ssl.sh
@@ -179,6 +179,7 @@ Project
 
 * [Prometheus Node Exporter](https://github.com/prometheus/node_exporter)
     - [Helium Miner Grafana Dashboard](https://github.com/tedder/helium_miner_grafana_dashboard)
+    - [Cosmos Grafana Dashboard](https://grafana.com/grafana/dashboards/11036)
 
 * [Helium Miner Exporter](https://github.com/tedder/miner_exporter)
 
