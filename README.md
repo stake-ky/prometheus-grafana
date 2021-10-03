@@ -1,4 +1,4 @@
-# README.md (Incomplete)
+# PROMETHEUS GRAFANA
 
 ## Introduction
 This is a tool to monitor the node perfomance. This will help to see the resources and performance data in the grafana dashboard also trigger the alert to the pagerduty using the alertmanager. We are using docker containers to run the services.
