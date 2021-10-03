@@ -96,7 +96,7 @@ Project
 
     ![PagerDuty Integration Key](src/pagerduty_integration_key.png)
 
-* Update the PagerDuty Integration Key in the `alertmanager.yml` configuration file under alertmanager directory. Replace the `PAGERDUTY_INTEGRATION_KEY` with the `Integration Key` obtained from the previous step or navigate to Services -> Service Directory -> Prometheus Automation -> Integrations from PagerDuty
+* Update the PagerDuty Integration Key in the `alertmanager.yml` configuration file under alertmanager directory. Replace `integration_key` below with the `Integration Key` obtained from the previous step or navigate to Services -> Service Directory -> Prometheus Automation -> Integrations from PagerDuty
 
     ```bash
     PAGERDUTY_INTEGRATION_KEY=integration_key && find alertmanager/alertmanager.yml -type f -exec sed -i 's+PAGERDUTY_INTEGRATION_KEY+'${PAGERDUTY_INTEGRATION_KEY}'+g' {} \;
@@ -150,7 +150,7 @@ Project
     ```
 
 ## Install Grafana Dashboard
-This project comes with Grafana config files for both `Helium` and `Cosmos`/`Secret Network` dashboards. You can download and install other dashboards from [Grafana Labs](https://grafana.com/grafana/dashboards) directly. If you are installing this repository for either of the aforementioned, run the following commands;
+This project comes with Grafana config files for both `Helium` and `Cosmos`/`Secret Network` dashboards. You can download and install other dashboards from [Grafana Labs](https://grafana.com/grafana/dashboards), **after** you launch the project. If you are installing this repository for either of the aforementioned, run the following commands;
     
 * Helium Validator
     ```bash
