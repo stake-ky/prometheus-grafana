@@ -149,6 +149,17 @@ Project
     docker-compose up --build --force-recreate --no-deps -d nginx
     ```
 
+## Install Grafana Dashboard
+This project comes with Grafana config files for both `Helium` and `Cosmos`/`Secret Network` dashboards. You can download and install other dashboards from [Grafana Labs](https://grafana.com/grafana/dashboards) directly. If you are installing this repository for either of the aforementioned, run the following commands;
+    
+* Helium Validator
+    ```bash
+    mv grafana/config/dashboards/config.json.helium grafana/config/dashboards/config.json
+    ```
+* Secret Network Node
+    ```bash
+    mv grafana/config/dashboards/config.json.secret grafana/config/dashboards/config.json
+    ```
 ## Launch Project
 * Launch Docker-compose containers 
     ```bash
