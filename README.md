@@ -11,12 +11,12 @@ This is a tool to monitor the node performance. This will help to see the resour
         ```bash
         groups
         ```
-* DNS Records for example.com (A record) and `prometheus`.example.com (CNAME Record)
+* DNS Records for `example.com` (A record) and `prometheus.example.com` (CNAME Record)
     - example.com 
         * Name/Host/Alias: @
         * Type: A
         * Data/Value/Destination: IP Address of server
-    - `prometheus`.example.com 
+    - `prometheus.example.com
         * Name/Host/Alias: prometheus
         * Type: CNAME
         * Data/Value/Destination: example.com
