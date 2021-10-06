@@ -1,7 +1,26 @@
 # PROMETHEUS GRAFANA
 
 ## Introduction
-This is a tool to monitor the node perfomance. This will help to see the resources and performance data in the grafana dashboard also trigger the alert to the pagerduty using the alertmanager. We are using docker containers to run the services.
+This is a tool to monitor the node performance. This will help to see the resources and performance data in the grafana dashboard and also trigger the alert to the pagerduty using the alertmanager. We are using docker containers to run the services.
+
+## Prerequisites
+
+* Linux debian based Server (Our setup is is on AWS Ubuntu 20.04LTS)
+* Install Docker and Docker-compose on the server (confirm $USER is added to docker group)
+    * [**Installation script provided**](/scripts/install_docker_git_etc.sh) in repository. Log out/in of sever may be required to propogate permission    
+        ```bash
+        groups
+        ```
+* DNS Records for example.com (A record) and `prometheus`.example.com (CNAME Record)
+    - example.com 
+        * Name/Host/Alias: @
+        * Type: A
+        * Data/Value/Destination: IP Address of server
+    - `prometheus`.example.com 
+        * Name/Host/Alias: prometheus
+        * Type: CNAME
+        * Data/Value/Destination: example.com
+    > Substitute `example.com` for your domain name.
 
 ## Project Structure
 
