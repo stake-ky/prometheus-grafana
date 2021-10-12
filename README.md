@@ -35,7 +35,8 @@ Project
 └───grafana
 |   └───config
 |   |   └───dashboards
-|   |       |   config.json
+|   |       |   config.json.helium
+|   |       |   config.json.secret
 |   |
 |   └───provisioning
 |       └───dashboards
